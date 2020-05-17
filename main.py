@@ -29,21 +29,19 @@ def calculate_price_call(inicial_call, end_call):
 
     if (inicial_call.hour >= NIGHT or end_call.hour < DAY):
         return IMPOST
-    
     if (end_call.hour >= NIGHT):
         end_call = datetime(end_call.year, end_call.month, end_call.day, 22)
 
     if (inicial_call.hour < DAY):
         inicial_call = datetime(inicial_call.year, inicial_call.month, inicial_call.day, 6)
-    
     time_call = math.floor((end_call - inicial_call).seconds / 60)
     final_price = (time_call * DAYTIME_IMPOST) + IMPOST
 
     return final_price
 
+
 def classify_by_phone_number(records):
     new_records = []
-    
     for record in records:
         aux = 0
         for new_record in new_records:
@@ -58,8 +56,8 @@ def classify_by_phone_number(records):
         if aux == 0:
             price_rounded = round(calculate_price_call(record['start'], record['end']), 2)
             new_records.append({'source': record['source'], 'total': price_rounded})
-    
     final_records = sorted(new_records, key=lambda new_record: new_record['total'], reverse=True)
     return final_records
+
 
 classify_by_phone_number(records)
